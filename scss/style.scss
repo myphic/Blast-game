@@ -1,0 +1,68 @@
+@import '../css/normalize.scss';
+//Mixins
+
+@mixin font-roboto{
+    font-family: 'Roboto', sans-serif;
+}
+// /Mixins
+
+// COMMON
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100vw;
+    height: 100vh;
+}
+body {
+    @include font-roboto;
+    font-weight: 400;
+    
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#game {
+    padding: 10px;
+    background: #2b2b2b;
+    color: white;
+    display: inline-block;
+    width: 100vw;
+    height: 100vh;
+}
+
+#game #title {
+    padding-bottom: 10px;
+    font-family: Troika;
+    font-size: 50px;
+    color: #5889a8;
+    text-shadow: 0 0 5px #0061b0;
+}
+
+#cnv {
+    border-radius: 15px;
+    background: #1a272f;
+    box-shadow: 0 0 5px #00A7FF;
+}
+::-webkit-progress-bar {
+    background: rgb(2,30,68);   
+}
+::-webkit-progress-value {
+    
+    background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+        background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+}
+.progressBlock {
+    background: rgb(12,46,92);  
+}
+#progressBar {
+    
+        background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+        background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+
+}
+
