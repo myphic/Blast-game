@@ -31,8 +31,10 @@ body {
     background: #2b2b2b;
     color: white;
     display: inline-block;
+    text-align: center;
     width: 100vw;
     height: 100vh;
+    
 }
 
 #game #title {
@@ -45,7 +47,7 @@ body {
 
 #cnv {
     border-radius: 15px;
-    background: #1a272f;
+    background: #0d233d;
     box-shadow: 0 0 5px #00A7FF;
 }
 ::-webkit-progress-bar {
@@ -60,9 +62,19 @@ body {
     background: rgb(12,46,92);  
 }
 #progressBar {
-    
-        background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
-        background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
-
+    background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
 }
 
+#resetField {
+    display: block;
+}
+#swapField {
+    width: 50px;
+    height: 50px;
+    background-color: rgb(12,46,92);
+}
+.swapIcon {
+    width: 50px;
+    height: 50px;
+}

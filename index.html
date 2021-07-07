@@ -13,10 +13,15 @@
     <div id="game">
         <br>
         <canvas id="cnv"></canvas>
-        <button id="resetField">click</button>
+        
         <div class="progressBlock">
             <div>Прогресс</div>
+            <p id="movesLeft">Осталось ходов до проигрыша: </p>
             <progress id="progressBar" value="0" max="0"></progress>
+        </div>
+        <div id="swapField">
+            <img class="swapIcon" src="img/swap.svg" alt="swap" />
+            <div id="swapCount"></div>
         </div>
     </div>
 </body>

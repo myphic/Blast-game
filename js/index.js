@@ -223,7 +223,9 @@ const SPIN = new function () {
     };
     SPIN.next = () =>{
         let progressBar = document.getElementById("progressBar");
+        let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 20;
+        let countClicksToLose = 15;
         cnv.addEventListener('click', function(event) {
             
             var x1 = event.pageX - cnv.offsetLeft + cnv.clientLeft,
@@ -231,9 +233,14 @@ const SPIN = new function () {
             
             matrix.forEach(function(elem, index) {
                 elem.forEach(function(element) {
+
                     if (y1 > element.y && y1 < element.y + element.h 
                         && x1 > element.x && x1 < element.x + element.w) {
-                        
+                            movesLeft.textContent = `Осталось ходов до проигрыша: ${countClicksToLose}`;
+                            countClicksToLose--;
+                            if (countClicksToLose === 0) {
+                                alert('Game is over');
+                            }
                               
                                 
                                 function ssss(node, m) {
@@ -241,7 +248,7 @@ const SPIN = new function () {
                                     let tmp = node;
                                     for(let i =0; i<m.length; i++){
                                         for(let j =0; j<m[i].length-1; j++){
-                                            if (node.visited!=true) {
+                                            
                                                 if ((Math.abs(node.x-m[i][j+1].x)==40 || Math.abs(node.y-m[i][j+1].y)==40)  &&(node.row==m[i][j+1].row || node.col ==m[i][j+1].col) && node.color == m[i][j+1].color) {
                                                     result.push(node, m[i][j+1]);
                                                     node.visited = true;
@@ -255,27 +262,27 @@ const SPIN = new function () {
                                                     node = m[j+1][i];
                                                 
                                                 }
-                                            }
+                                            
                                             
                                         }
                                     }
                                     //node = tmp;
                                     for(let i =0; i<m.length; i++){
                                         for(let j =1; j<m[i].length; j++){
-                                            if (node.visited!=false) {
+                                            
                                                 if ((Math.abs(node.x-m[j-1][i].x)==40 || Math.abs(node.y -m[j-1][i].y)==40)&&(node.row==m[j-1][i].row || node.col ==m[j-1][i].col) && node.color == m[j-1][i].color) {
                                                     result.push(node, m[j-1][i]);
-                                                    node.visited = true;
+                                                    
                                                     node = m[j-1][i];
                                                 
                                                 }
                                                 if ((Math.abs(node.x-m[i][j-1].x)==40 || Math.abs(node.y -m[i][j-1].y)==40)&&(node.row==m[i][j-1].row || node.col ==m[i][j-1].col) && node.color == m[i][j-1].color) {
                                                     result.push(node, m[i][j-1]);
-                                                    node.visited = true;
+                                                    
                                                     node = m[i][j-1];
                                                 
                                                 }
-                                            }
+                                            
                                         }
                                     }
                                     /*for(let i =0; i<m.length; i++){
@@ -350,14 +357,11 @@ const SPIN = new function () {
                                 
                                
                         
-                        //console.log(globalColor[globalColor.length - index- 1]);
-                        
-                        //console.log(enemies);
                     }
                 })
             });
             if (score >= 20) {
-                alert("Game is over");
+                alert("Вы победили!");
             }
         }, false)
 
@@ -365,11 +369,19 @@ const SPIN = new function () {
 };
 
 window.addEventListener('load', function () {
-    SPIN.start(640, 480);
+    SPIN.start(460, 450);
     
     const ww = 10;
     const hh = 10;
-    let t = document.getElementById('resetField').addEventListener('click', function () {
+    let countClicks = 3;
+    
+    let t = document.getElementById('swapField').addEventListener('click', function () {
+        document.getElementById('swapCount').textContent = countClicks;
+        
+        if(countClicks==0) {
+            return false;
+        }
+        countClicks--;
         for (let j = 0; j < ww; j++) {
             matrix[j] = [];
             for (let i = 0; i < hh ; i++) {
@@ -400,9 +412,6 @@ window.addEventListener('load', function () {
     }
     
     //SPIN.update();
-    
-    SPIN.set_draw((s) => {
-        s.draw_text(640/2-60, 5, '#8cff00', 'Игровой счет: '+score);
-    });
+   
     
 });
