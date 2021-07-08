@@ -226,6 +226,7 @@ const SPIN = new function () {
         let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 20;
         let countClicksToLose = 15;
+        movesLeft.textContent = countClicksToLose;
         cnv.addEventListener('click', function(event) {
             
             var x1 = event.pageX - cnv.offsetLeft + cnv.clientLeft,
@@ -236,12 +237,12 @@ const SPIN = new function () {
 
                     if (y1 > element.y && y1 < element.y + element.h 
                         && x1 > element.x && x1 < element.x + element.w) {
-                            movesLeft.textContent = `Осталось ходов до проигрыша: ${countClicksToLose}`;
+                            
                             countClicksToLose--;
                             if (countClicksToLose === 0) {
                                 alert('Game is over');
                             }
-                              
+                            movesLeft.textContent = countClicksToLose;
                                 
                                 function ssss(node, m) {
                                     let result = [];
@@ -374,14 +375,16 @@ window.addEventListener('load', function () {
     const ww = 10;
     const hh = 10;
     let countClicks = 3;
-    
-    let t = document.getElementById('swapField').addEventListener('click', function () {
-        document.getElementById('swapCount').textContent = countClicks;
+    let swapCount = document.getElementById('swapCount');
+    swapCount.textContent = countClicks;
+    let swapField = document.getElementById('swapField');
+    swapField.addEventListener('click', function (event) {
         
-        if(countClicks==0) {
-            return false;
-        }
+        
         countClicks--;
+        
+        swapCount.textContent = countClicks;
+        
         for (let j = 0; j < ww; j++) {
             matrix[j] = [];
             for (let i = 0; i < hh ; i++) {
@@ -390,6 +393,11 @@ window.addEventListener('load', function () {
                 matrix[j][i] = (SPIN.create_node(ttt,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
                 ttt++;
             }
+        }
+        if(countClicks==0) {
+            swapCount.textContent = "";
+            swapField.style.opacity = 0.3;
+            swapField.style.pointerEvents = 'none';
         }
     })
 

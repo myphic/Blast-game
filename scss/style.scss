@@ -1,8 +1,8 @@
 @import '../css/normalize.scss';
 //Mixins
 
-@mixin font-roboto{
-    font-family: 'Roboto', sans-serif;
+@mixin font-marvin{
+    font-family: 'Marvin', sans-serif;
 }
 // /Mixins
 
@@ -16,14 +16,19 @@ html {
     height: 100vh;
 }
 body {
-    @include font-roboto;
+    @include font-marvin;
     font-weight: 400;
-    
+    font-size: 30px;
+    line-height: 40px;
 }
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+}
+
+.col {
+    margin-right: 50px;
 }
 
 #game {
@@ -34,7 +39,9 @@ body {
     text-align: center;
     width: 100vw;
     height: 100vh;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #game #title {
@@ -47,9 +54,14 @@ body {
 
 #cnv {
     border-radius: 15px;
+    
     background: #0d233d;
     box-shadow: 0 0 5px #00A7FF;
 }
+.canvas{
+
+}
+
 ::-webkit-progress-bar {
     background: rgb(2,30,68);   
 }
@@ -58,9 +70,16 @@ body {
     background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
         background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
 }
-.progressBlock {
-    background: rgb(12,46,92);  
+.progress {
+    background: rgb(32,85,157); 
+    border-radius: 15px;
+    background-image: -moz-linear-gradient( 90deg, rgb(16,61,121) 0%, rgb(9,33,64) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(16,61,121) 0%, rgb(9,33,64) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(16,61,121) 0%, rgb(9,33,64) 100%); 
+    margin: 0;
 }
+
+  
 #progressBar {
     background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
     background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
@@ -70,11 +89,53 @@ body {
     display: block;
 }
 #swapField {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(12,46,92);
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    background-image: -moz-linear-gradient( 90deg, rgb(117,23,244) 0%, rgb(88,6,115) 19%, rgb(147,16,181) 46%, rgb(220,87,248) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(117,23,244) 0%, rgb(88,6,115) 19%, rgb(147,16,181) 46%, rgb(220,87,248) 100%);
+    background-image: -ms-linear-gradient( 90deg, rgb(117,23,244) 0%, rgb(88,6,115) 19%, rgb(147,16,181) 46%, rgb(220,87,248) 100%);
+    box-shadow: 0px 13px 49.47px 1.53px rgba(21, 46, 79, 0.51),inset 0px 23px 24px 0px rgba(246, 255, 236, 0.73);
+
 }
+
 .swapIcon {
     width: 50px;
     height: 50px;
+    padding-top: 10px;
+}
+
+#swapCount {
+    background: linear-gradient(180deg,#30004e,#4d055d);
+    border-radius: 10px;
+    width: 80px;
+    margin: 0 auto;
+    padding-top: 1px;
+    font-size: 30px;
+    line-height: 35px;
+    &::after {
+        content: "";
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+        border-radius: 50%;
+        background-color: #b4b4b4;
+        margin-left: 15px;
+        margin-bottom: 3px;
+    }
+}
+#movesLeft {
+    background: no-repeat center url("/img/moves.svg");
+    background-size: contain;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+    line-height: 160px;
+}
+.moves {
+    background: linear-gradient(180deg,#30004e,#4d055d);
 }

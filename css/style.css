@@ -311,13 +311,18 @@ html {
   height: 100vh; }
 
 body {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400; }
+  font-family: 'Marvin', sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 40px; }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box; }
+
+.col {
+  margin-right: 50px; }
 
 #game {
   padding: 10px;
@@ -326,7 +331,10 @@ body {
   display: inline-block;
   text-align: center;
   width: 100vw;
-  height: 100vh; }
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
 
 #game #title {
   padding-bottom: 10px;
@@ -347,8 +355,13 @@ body {
   background-image: -moz-linear-gradient(90deg, #60ff00 1%, #1d9b00 32%, #a2ff00 77%, #c7ff66 93%, #ecffcc 100%);
   background-image: -webkit-linear-gradient(90deg, #60ff00 1%, #1d9b00 32%, #a2ff00 77%, #c7ff66 93%, #ecffcc 100%); }
 
-.progressBlock {
-  background: #0c2e5c; }
+.progress {
+  background: #20559d;
+  border-radius: 15px;
+  background-image: -moz-linear-gradient(90deg, #103d79 0%, #092140 100%);
+  background-image: -webkit-linear-gradient(90deg, #103d79 0%, #092140 100%);
+  background-image: -ms-linear-gradient(90deg, #103d79 0%, #092140 100%);
+  margin: 0; }
 
 #progressBar {
   background-image: -moz-linear-gradient(90deg, #60ff00 1%, #1d9b00 32%, #a2ff00 77%, #c7ff66 93%, #ecffcc 100%);
@@ -358,10 +371,48 @@ body {
   display: block; }
 
 #swapField {
-  width: 50px;
-  height: 50px;
-  background-color: #0c2e5c; }
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  background-image: -moz-linear-gradient(90deg, #7517f4 0%, #580673 19%, #9310b5 46%, #dc57f8 100%);
+  background-image: -webkit-linear-gradient(90deg, #7517f4 0%, #580673 19%, #9310b5 46%, #dc57f8 100%);
+  background-image: -ms-linear-gradient(90deg, #7517f4 0%, #580673 19%, #9310b5 46%, #dc57f8 100%);
+  box-shadow: 0px 13px 49.47px 1.53px rgba(21, 46, 79, 0.51), inset 0px 23px 24px 0px rgba(246, 255, 236, 0.73); }
 
 .swapIcon {
   width: 50px;
-  height: 50px; }
+  height: 50px;
+  padding-top: 10px; }
+
+#swapCount {
+  background: linear-gradient(180deg, #30004e, #4d055d);
+  border-radius: 10px;
+  width: 80px;
+  margin: 0 auto;
+  padding-top: 1px;
+  font-size: 30px;
+  line-height: 35px; }
+  #swapCount::after {
+    content: "";
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    border-radius: 50%;
+    background-color: #b4b4b4;
+    margin-left: 15px;
+    margin-bottom: 3px; }
+
+#movesLeft {
+  background: no-repeat center url("/img/moves.svg");
+  background-size: contain;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 150px;
+  line-height: 160px; }
+
+.moves {
+  background: linear-gradient(180deg, #30004e, #4d055d); }
