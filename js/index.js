@@ -164,18 +164,8 @@ const SPIN = new function () {
                  node.h -= 1; 
             }
         }   
-           
-        for (let i = nodes.length-1; i >= 0; i--) {
-           // matrix[i][i]._update();
-            //nodes[i]._update();
-            //nodes[i].draw();
-            
-        }
-        
-        if (user_draw)
-            user_draw(SPIN);
+
         if(timer < 1000) {
-           
             requestAnimationFrame(SPIN.update);
         }
         
@@ -239,79 +229,40 @@ const SPIN = new function () {
                         && x1 > element.x && x1 < element.x + element.w) {
                             
                             countClicksToLose--;
+                            
+                            movesLeft.textContent = countClicksToLose;
                             if (countClicksToLose === 0) {
                                 alert('Game is over');
                             }
-                            movesLeft.textContent = countClicksToLose;
+                            let res = [];
+                            function removeItem(array, item, row, col) {
                                 
-                                function ssss(node, m) {
-                                    let result = [];
-                                    let tmp = node;
-                                    for(let i =0; i<m.length; i++){
-                                        for(let j =0; j<m[i].length-1; j++){
-                                            
-                                                if ((Math.abs(node.x-m[i][j+1].x)==40 || Math.abs(node.y-m[i][j+1].y)==40)  &&(node.row==m[i][j+1].row || node.col ==m[i][j+1].col) && node.color == m[i][j+1].color) {
-                                                    result.push(node, m[i][j+1]);
-                                                    node.visited = true;
-                                                    node = m[i][j+1];
-                                                    
-                                                    //i=0;
-                                                }
-                                                if ((Math.abs(node.x-m[j+1][i].x)==40 || Math.abs(node.y -m[j+1][i].y)==40)&&(node.row==m[j+1][i].row || node.col ==m[j+1][i].col) && node.color == m[j+1][i].color) {
-                                                    result.push(node, m[j+1][i]);
-                                                    node.visited = true;
-                                                    node = m[j+1][i];
-                                                
-                                                }
-                                            
-                                            
-                                        }
-                                    }
-                                    //node = tmp;
-                                    for(let i =0; i<m.length; i++){
-                                        for(let j =1; j<m[i].length; j++){
-                                            
-                                                if ((Math.abs(node.x-m[j-1][i].x)==40 || Math.abs(node.y -m[j-1][i].y)==40)&&(node.row==m[j-1][i].row || node.col ==m[j-1][i].col) && node.color == m[j-1][i].color) {
-                                                    result.push(node, m[j-1][i]);
-                                                    
-                                                    node = m[j-1][i];
-                                                
-                                                }
-                                                if ((Math.abs(node.x-m[i][j-1].x)==40 || Math.abs(node.y -m[i][j-1].y)==40)&&(node.row==m[i][j-1].row || node.col ==m[i][j-1].col) && node.color == m[i][j-1].color) {
-                                                    result.push(node, m[i][j-1]);
-                                                    
-                                                    node = m[i][j-1];
-                                                
-                                                }
-                                            
-                                        }
-                                    }
-                                    /*for(let i =0; i<m.length; i++){
-                                        for(let j =1; j<m[i].length; j++){
-                                            
-                                            if ((Math.abs(node.x-m[i][j-1].x)==40 || Math.abs(node.y -m[i][j-1].y)==40)&&(node.row==m[i][j-1].row || node.col ==m[i][j-1].col) && node.color == m[i][j-1].color) {
-                                                result.push(node, m[i][j-1]);
-                                                node = m[i][j-1];
-                                               
-                                            }
-                                        }
-                                    } */
-                                    console.log(result);
-                                    return result.filter((value, index, self) => {
-                                        return self.indexOf(value) == index;
-                                    });
+                                if (array[row][col].visited === true) return;
+                                array[row][col].visited = true;
+                                console.log(array[row][col]);
+                                res.push(array[row][col]);
+                                // left
+                                if (col!=0&& array[row][col - 1].color === item.color) {
+                                  removeItem(array, item, row, col - 1);
+                                }
+                                // right
+                                if (col!=array.length-1 && array[row][col + 1].color === item.color) {
+                                  removeItem(array, item, row, col + 1);
+                                }
+                                // top
+                                if (row!=0 &&array[row - 1] && array[row - 1][col].color === item.color) {
+                                  removeItem(array, item, row - 1, col);
+                                }
+                                // bottom
+                                if (row!=array.length && array[row + 1] && array[row + 1][col].color === item.color) {
+                                  removeItem(array, item, row + 1, col);
                                 }
                                 
-                                console.log(ssss(element,matrix)); 
-                                
-                                
-                               //var img = ctx.createImageData(40, 40);
-                               
-                                //ctx.putImageData(img, element.x, element.y);
-                                
-                                
-                                let tmp = ssss(element, matrix);
-                                let tt = tmp.length;
+                                return res;
+                              }
+                              
+                                let tmp = removeItem(matrix,element,element.row, element.col);
+                                let tt = res.length;
                                 score+=tmp.length;
                                 progressBar.value += tmp.length;
                                 for(let k =0; k<tt; k++) {
