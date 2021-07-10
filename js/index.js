@@ -1,31 +1,19 @@
-let enemies = [];
-let globalColor = [];
 let matrix = [];
 let score = 0;
 const SPIN = new function () {
     let SPIN = this,
-        cnv, ctx, width, height, nodes = [], node_count = 0, for_destroy = {},
-        down_keys = {}, timer = 0, user_draw;
+        cnv, ctx, width, height, nodes = [], 
+       timer = 0;
         
     let $ = (id) => {return document.getElementById(id)};
   
     let rect = (x, y, w, h, color) => {
-        
         let image = new Image();
-        //const colors = ["red", "green", "blue", "yellow", "purple"];
-        //color = colors[Math.floor(Math.random() * colors.length)];
-
         image.src = `img/${color}.png`;
         ctx.drawImage(image, x, y, w, h);
-        
     };
     cnv = $('cnv');
-        ctx = cnv.getContext('2d');
-    
-    let text = (x, y, clr, text) => {
-        ctx.fillStyle = clr;
-        ctx.fillText(text, x, y);
-    };
+    ctx = cnv.getContext('2d');
 
     class Node {
         constructor (id, x, y, w, h, color, row, col, visited) {
@@ -35,7 +23,6 @@ const SPIN = new function () {
             this.w = w;
             this.h = h;
             this.color = color;
-            
             this.row = row;
             this.col = col;
             this.visited = visited;
@@ -51,76 +38,15 @@ const SPIN = new function () {
             if(this.delete)
                 this.delete(this)
         }
-        _updateNode () {
-            if (this.updateNode)
-                this.updateNode(this);
-        }
+
         draw () {
             rect(this.x, this.y, this.w, this.h, this.color, this.row, this.col, this.visited);
-        }
-
-        destroy () {
-            for_destroy[this.id] = this;
-        }
-
-        move (x, y) {
-            this.x += x;
-            this.y += y;
-        }
-
-        intersect (node) {
-            return !(this.x+this.w < node.x || this.y+this.h < node.y || this.x > node.x+node.w || this.y > node.y+node.h);
-        }
-
-        getRow() {
-            return this.row;
-        }
-        getCol() {
-            return this.col;
-        }
-        getDeleteSize( time) {
-            if (time < 0) time = 0;
-            let size;
-    
-            
-                if (time >= 600) size = 0;
-                else {
-                    let diff = this.width / 600;
-                    size = this.width - diff * time;
-                }    
-            
-    
-            return size;
         }
     }
 
     SPIN.create_node = (id, x, y, w, h, color, row, col, visited) => {
         return new Node(id, x, y, w, h, color, row, col, visited);
     };
-
-    SPIN.draw_text = (x, y, clr, _text) => {
-        text(x, y, clr, _text);
-    };
-
-
-
-    SPIN.updateNode = (node) => {
-        
-        let counter = 0;
-        console.log(node);
-        var img = ctx.createImageData(40, 40);
-        //for (var i = img.data.length; --i >= 0; )
-            //img.data[i] = 0;
-        //ctx.putImageData(img, node.x, node.y);
-        
-        
-        if(counter < 100) {
-            requestAnimationFrame(SPIN.updateNode);
-        }
-        
-        
-        counter++;
-    }
 
     SPIN.delete = (tile, coords, callback) =>{
         let start = performance.now();
@@ -130,13 +56,13 @@ const SPIN = new function () {
             let progress = timestamp - start;
             ctx.clearRect(coords.x, coords.y, coords.w, coords.h);
 
-            let size = coords.getDeleteSize(progress);
             coords.draw();
             if(coords.w==0 && coords.h==0) {
                 return;
             }
-            coords.w-=1;
             coords.h-=1;
+            coords.w-=1;
+            
             let time = new Date();
             
             if (progress < stop) {
@@ -149,46 +75,28 @@ const SPIN = new function () {
         requestAnimationFrame(step); 
     }
 
-    SPIN.update = (node) => {
+    SPIN.update = () => {
         ctx.clearRect(0, 0, width, height);
-       
         for(let i = 0; i<matrix.length; i++) {
             for(let j = 0;j<matrix[i].length; j++ ){
                 matrix[i][j]._update();
                 matrix[i][j].draw();
-                if(node.w == 0
-                 &&   node.h == 0){
-                    
-                 }
-                 node.w -= 1;
-                 node.h -= 1; 
             }
         }   
 
         if(timer < 1000) {
             requestAnimationFrame(SPIN.update);
         }
-        
-        
         timer++;
     };
   
-
-    SPIN.key = (key) => {
-        return down_keys[key];
-    };
-
-
     SPIN.start = (W, H) => {
-        
         cnv = $('cnv');
         ctx = cnv.getContext('2d');
         width = W;
         height = H;
         cnv.width = width;
         cnv.height = height;
-
-
         SPIN.update();
     };
     SPIN.next = () =>{
