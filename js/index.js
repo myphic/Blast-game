@@ -178,17 +178,6 @@ const SPIN = new function () {
         return down_keys[key];
     };
 
-    SPIN.clear_timer = () => {
-        timer = 0;
-    };
-
-    SPIN.get_timer = () => {
-        return timer;
-    };
-
-    SPIN.set_draw = (f) => {
-        user_draw = f;
-    };
 
     SPIN.start = (W, H) => {
         
@@ -198,23 +187,14 @@ const SPIN = new function () {
         height = H;
         cnv.width = width;
         cnv.height = height;
-        ctx.textBaseline = 'top';
-        ctx.font = '20px Troika';
 
-        window.addEventListener('keydown', (e) => {
-            down_keys[e.code] = true;
-        });
-
-        window.addEventListener('keyup', (e) => {
-            delete down_keys[e.code];
-        });
 
         SPIN.update();
     };
     SPIN.next = () =>{
         let progressBar = document.getElementById("progressBar");
         let movesLeft = document.getElementById('movesLeft');
-        progressBar.max = 20;
+        progressBar.max = 40;
         let countClicksToLose = 15;
         movesLeft.textContent = countClicksToLose;
         cnv.addEventListener('click', function(event) {
@@ -240,6 +220,7 @@ const SPIN = new function () {
                                 if (array[row][col].visited === true) return;
                                 array[row][col].visited = true;
                                 console.log(array[row][col]);
+                                
                                 res.push(array[row][col]);
                                 // left
                                 if (col!=0&& array[row][col - 1].color === item.color) {
@@ -257,62 +238,42 @@ const SPIN = new function () {
                                 if (row!=array.length && array[row + 1] && array[row + 1][col].color === item.color) {
                                   removeItem(array, item, row + 1, col);
                                 }
-                                
-                                return res;
-                              }
+                                if(res.length > 1 ) {
+                                    return res;
+                                }
+                            }
                               
-                                let tmp = removeItem(matrix,element,element.row, element.col);
-                                let tt = res.length;
-                                score+=tmp.length;
-                                progressBar.value += tmp.length;
-                                for(let k =0; k<tt; k++) {
+                            let tmp = removeItem(matrix,element,element.row, element.col);
+                            let tt = res.length;
+                            score+=tmp.length;
+                            progressBar.value += tmp.length;
+                            for(let k =0; k<tt; k++) {
+                                
+                                
+                                for (let i = 0; i<matrix.length; i++) {
+                                    const colors = ["red", "green", "blue", "yellow", "purple"];
+                                    color = colors[Math.floor(Math.random() * colors.length)];
                                     
-                                    
-                                    for (let i = 0; i<matrix.length; i++) {
-                                        const colors = ["red", "green", "blue", "yellow", "purple"];
-                                        color = colors[Math.floor(Math.random() * colors.length)];
-                                        
-                                        let tmpImg = new Image();
-                                        tmpImg.src = `../img/${color}.png`
-                                    
-                                        for (let j = 0; j<matrix[i].length; j++) {
-                                            if(tmp[k].row==matrix[i][j].row && tmp[k].col == matrix[i][j].col){
-                                                var p = 0;
-                                                //delete matrix[i][j];
-                                                //SPIN.update(matrix[i][j]);
-                                                
-                                                //ctx.clearRect(matrix[i][j].x, matrix[i][j].y, 40, 40);
-                                                
-                                                
-                                               //animate();
-                                               SPIN.delete(matrix[i][j],matrix[i][j],console.log("1111"));
-                                               //obg.animate2();    
-                                                matrix[i][j] = (SPIN.create_node(matrix[i][j].id, matrix[i][j].x, matrix[i][j].y, 40, 40, color, matrix[i][j].row, matrix[i][j].col, false));
-                                                //nodes[element.id-i] = (SPIN.create_node(element.id-i, nodes[element.id-i].x, nodes[element.id-i].y, 40, 40, color, nodes[element.id-i].row, nodes[element.id-i].col));
-                                                //SPIN.update();
-                                                 
-                                                ctx.drawImage(tmpImg, matrix[i][j].x, matrix[i][j].y, 40, 40);
-                                                //ctx.drawImage(tmpImg, tmp[k].x, tmp[k].y, 40, 40);
-                                                
-                                                
-                                                //if(p < 1000)
-                                                  //  requestAnimationFrame(() => matrix[i][j].w=0);
-                                                //p++;
-                                                
-                                            }
-                                            //ctx.drawImage(tmpImg, matrix[i][j-1].x, matrix[i][j-1].y, 40, 40);
+                                    let tmpImg = new Image();
+                                    tmpImg.src = `../img/${color}.png`
+                                
+                                    for (let j = 0; j<matrix[i].length; j++) {
+                                        if(tmp[k].row==matrix[i][j].row && tmp[k].col == matrix[i][j].col){
+
+                                            SPIN.delete(matrix[i][j],matrix[i][j],console.log("1111"));
+
+                                            matrix[i][j] = (SPIN.create_node(matrix[i][j].id, matrix[i][j].x, matrix[i][j].y, 40, 40, color, matrix[i][j].row, matrix[i][j].col, false));
+
+                                            ctx.drawImage(tmpImg, matrix[i][j].x, matrix[i][j].y, 40, 40);
+
                                         }
-                                    } 
+                                    }
                                 } 
-                                
-                                
-                                
-                               
-                        
+                            } 
                     }
                 })
             });
-            if (score >= 20) {
+            if (score >= 40) {
                 alert("Вы победили!");
             }
         }, false)
