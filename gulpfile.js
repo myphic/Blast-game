@@ -1,8 +1,8 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const babel = require('gulp-babel');
-
 const browserSync = require('browser-sync').create();
+
 function style() {
     return gulp.src('./scss/**/*.scss').pipe(sass())
     .pipe(gulp.dest('./css'))
@@ -16,6 +16,7 @@ gulp.task('default', () =>
         }))
         .pipe(gulp.dest('dest'))
 );
+
 function watch() {
     browserSync.init({
         files: ['./index.html','./search_result.html'],
@@ -27,5 +28,6 @@ function watch() {
     gulp.watch('./scss/**/*.scss', style);
     gulp.watch('./*.html').on('change', browserSync.reload);
 }
+
 exports.style = style;
 exports.watch = watch;

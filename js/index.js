@@ -1,54 +1,28 @@
-let matrix = [];
+let tileMatrix = [];
 let score = 0;
+let $ = (id) => {return document.getElementById(id)};
+let cnv = $('cnv');
+let ctx = cnv.getContext('2d');
 
-const BLAST = new function () {
-    let BLAST = this,
-        cnv, ctx, width, height, timer = 0;
-        
-    let $ = (id) => {return document.getElementById(id)};
-  
-    let rect = (x, y, w, h, color) => {
-        let image = new Image();
-        image.src = `img/${color}.png`;
-        ctx.drawImage(image, x, y, w, h);
-    };
-    cnv = $('cnv');
-    ctx = cnv.getContext('2d');
+class Blast {
+    constructor( width, height, timer) {
 
-    class Node {
-        constructor (id, x, y, w, h, color, row, col, visited) {
-            this.id = id;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            this.color = color;
-            this.row = row;
-            this.col = col;
-            this.visited = visited;
-
-        }
-
-        _update () {
-            if (this.update)
-                this.update(this);
-            
-        }
-        _delete() {
-            if(this.delete)
-                this.delete(this)
-        }
-
-        draw () {
-            rect(this.x, this.y, this.w, this.h, this.color, this.row, this.col, this.visited);
-        }
+        this.width = width;
+        this.height = height; 
+        this.timer = timer
     }
 
-    BLAST.create_node = (id, x, y, w, h, color, row, col, visited) => {
+    rect = (x, y, w, h, color) => {
+        let image = new Image();
+        image.src = `img/tiles/${color}.png`;
+        ctx.drawImage(image, x, y, w, h);
+    };
+   
+    create_node = (id, x, y, w, h, color, row, col, visited) => {
         return new Node(id, x, y, w, h, color, row, col, visited);
     };
 
-    BLAST.deleteAnimation = (coords) =>{
+    deleteAnimation = (coords) =>{
         let start = performance.now();
         let stop = 1000;
 
@@ -70,32 +44,32 @@ const BLAST = new function () {
         requestAnimationFrame(step); 
     }
 
-    BLAST.update = () => {
-        ctx.clearRect(0, 0, width, height);
-        for(let i = 0; i<matrix.length; i++) {
-            for(let j = 0;j<matrix[i].length; j++ ){
-                matrix[i][j]._update();
-                matrix[i][j].draw();
+    update = () => {
+        ctx.clearRect(0, 0, this.width, this.height);
+        for(let i = 0; i<tileMatrix.length; i++) {
+            for(let j = 0;j<tileMatrix[i].length; j++ ){
+                tileMatrix[i][j]._update();
+                tileMatrix[i][j].draw();
             }
         }   
 
-        if(timer < 1000) {
-            requestAnimationFrame(BLAST.update);
+        if(this.timer < 1000) {
+            requestAnimationFrame(this.update);
         }
-        timer++;
+        this.timer++;
     };
   
-    BLAST.start = (W, H) => {
+    start = (W, H) => {
         cnv = $('cnv');
         ctx = cnv.getContext('2d');
-        width = W;
-        height = H;
-        cnv.width = width;
-        cnv.height = height;
-        BLAST.update();
+        this.width = W;
+        this.height = H;
+        cnv.width = this.width;
+        cnv.height = this.height;
+        this.update();
     };
    
-    BLAST.next = () =>{
+    next = () =>{
         let progressBar = document.getElementById("progressBar");
         let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 40;
@@ -106,7 +80,7 @@ const BLAST = new function () {
             var x1 = event.pageX - cnv.offsetLeft + cnv.clientLeft,
             y1 = event.pageY - cnv.offsetTop + cnv.clientTop;
             
-            matrix.forEach(function(elem, index) {
+            tileMatrix.forEach(function(elem, index) {
                 elem.forEach(function(element) {
 
                     if (y1 > element.y && y1 < element.y + element.h 
@@ -123,7 +97,6 @@ const BLAST = new function () {
                         
                                 if (array[row][col].visited === true) return;
                                 array[row][col].visited = true;
-                                console.log(array[row][col]);
                                 
                                 res.push(array[row][col]);
                                 // left
@@ -150,27 +123,26 @@ const BLAST = new function () {
                                 return res;
                             }
                             
-                            let tmp = adjacentTiles(matrix,element,element.row, element.col);
-                            if (tmp.length>1) {
+                            let adjArray = adjacentTiles(tileMatrix, element, element.row, element.col);
+                            if (adjArray.length>1) {
                             
                             let tt = res.length;
-                            score+=tmp.length;
-                            progressBar.value += tmp.length;
+                            score+=adjArray.length;
+                            progressBar.value += adjArray.length;
                             for(let k =0; k<tt; k++) {
-                                for (let i = 0; i<matrix.length; i++) {
+                                for (let i = 0; i<tileMatrix.length; i++) {
                                     const colors = ["red", "green", "blue", "yellow", "purple"];
                                     color = colors[Math.floor(Math.random() * colors.length)];
-                                    
                                     let tmpImg = new Image();
-                                    tmpImg.src = `../img/${color}.png`
-                                
-                                    for (let j = 0; j<matrix[i].length; j++) {
-                                        if(tmp[k].row==matrix[i][j].row && tmp[k].col == matrix[i][j].col){
-                                            BLAST.deleteAnimation(matrix[i][j]);
+                                    tmpImg.src = `../img/${color}.png`;
+                                    let p = new Blast();
+                                    for (let j = 0; j<tileMatrix[i].length; j++) {
+                                        if(adjArray[k].row==tileMatrix[i][j].row && adjArray[k].col == tileMatrix[i][j].col){
+                                            p.deleteAnimation(tileMatrix[i][j]);
 
-                                            matrix[i][j] = (BLAST.create_node(matrix[i][j].id, matrix[i][j].x, matrix[i][j].y, 40, 40, color, matrix[i][j].row, matrix[i][j].col, false));
+                                            tileMatrix[i][j] = (p   .create_node(tileMatrix[i][j].id, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40, color, tileMatrix[i][j].row, tileMatrix[i][j].col, false));
 
-                                            ctx.drawImage(tmpImg, matrix[i][j].x, matrix[i][j].y, 40, 40);
+                                            ctx.drawImage(tmpImg, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40);
                                         }
                                     }
                                 } 
@@ -187,7 +159,38 @@ const BLAST = new function () {
     };
 };
 
+class Node{
+    constructor (id, x, y, w, h, color, row, col, visited) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.color = color;
+        this.row = row;
+        this.col = col;
+        this.visited = visited;
+    }
+
+    _update () {
+        if (this.update)
+            this.update(this);
+        
+    }
+    _delete() {
+        if(this.delete)
+            this.delete(this)
+    }
+
+    draw () {
+        let b = new Blast();
+        b.rect(this.x, this.y, this.w, this.h, this.color, this.row, this.col, this.visited);
+    }
+}
+
+
 window.addEventListener('load', function () {
+    let BLAST = new Blast(460, 450, 0, 0);
     BLAST.start(460, 450);
     
     const ww = 10;
@@ -201,11 +204,11 @@ window.addEventListener('load', function () {
         swapCount.textContent = amountResetBooster;
         let id = 0;
         for (let j = 0; j < ww; j++) {
-            matrix[j] = [];
+            tileMatrix[j] = [];
             for (let i = 0; i < hh ; i++) {
                 const colors = ["red", "green", "blue", "yellow", "purple"];
                 color = colors[Math.floor(Math.random() * colors.length)];
-                matrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
+                tileMatrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
                 id++;
             }
         }
@@ -216,17 +219,15 @@ window.addEventListener('load', function () {
         }
     })
 
-
-  
     BLAST.next();
     
     let id = 0;
     for (let j = 0; j < ww; j++) {
-        matrix[j] = [];
+        tileMatrix[j] = [];
         for (let i = 0; i < hh ; i++) {
             const colors = ["red", "green", "blue", "yellow", "purple"];
             color = colors[Math.floor(Math.random() * colors.length)];
-            matrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));   
+            tileMatrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));   
             id++;
         }
     }
