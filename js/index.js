@@ -3,8 +3,7 @@ let score = 0;
 
 const BLAST = new function () {
     let BLAST = this,
-        cnv, ctx, width, height, nodes = [], 
-       timer = 0;
+        cnv, ctx, width, height, timer = 0;
         
     let $ = (id) => {return document.getElementById(id)};
   
@@ -27,7 +26,7 @@ const BLAST = new function () {
             this.row = row;
             this.col = col;
             this.visited = visited;
-            nodes.push(this);
+
         }
 
         _update () {
@@ -145,10 +144,15 @@ const BLAST = new function () {
                                 }
                                 if(res.length > 1 ) {
                                     return res;
+                                } else {
+                                    array[row][col].visited = false;
                                 }
+                                return res;
                             }
-                              
+                            
                             let tmp = adjacentTiles(matrix,element,element.row, element.col);
+                            if (tmp.length>1) {
+                            
                             let tt = res.length;
                             score+=tmp.length;
                             progressBar.value += tmp.length;
@@ -171,6 +175,7 @@ const BLAST = new function () {
                                     }
                                 } 
                             } 
+                        }
                     }
                 })
             });
@@ -187,13 +192,13 @@ window.addEventListener('load', function () {
     
     const ww = 10;
     const hh = 10;
-    let countClicks = 3;
+    let amountResetBooster = 3;
     let swapCount = document.getElementById('swapCount');
-    swapCount.textContent = countClicks;
+    swapCount.textContent = amountResetBooster;
     let swapField = document.getElementById('swapField');
     swapField.addEventListener('click', function () {
-        countClicks--;
-        swapCount.textContent = countClicks;
+        amountResetBooster--;
+        swapCount.textContent = amountResetBooster;
         let id = 0;
         for (let j = 0; j < ww; j++) {
             matrix[j] = [];
@@ -204,7 +209,7 @@ window.addEventListener('load', function () {
                 id++;
             }
         }
-        if(countClicks==0) {
+        if(amountResetBooster==0) {
             swapCount.textContent = "";
             swapField.style.opacity = 0.3;
             swapField.style.pointerEvents = 'none';

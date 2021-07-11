@@ -336,12 +336,6 @@ body {
   justify-content: center;
   align-items: center; }
 
-#game #title {
-  padding-bottom: 10px;
-  font-size: 50px;
-  color: #5889a8;
-  text-shadow: 0 0 5px #0061b0; }
-
 #cnv {
   border-radius: 15px;
   background: #0d233d;
@@ -423,35 +417,3 @@ body {
   border-color: #61d1ed;
   border-radius: 15px;
   background-color: #20549a; }
-
-.Rounded_Rectangle_1_copy_3 {
-  border-radius: 60px;
-  position: absolute;
-  left: 2225px;
-  top: 577px;
-  width: 1017px;
-  height: 955px;
-  z-index: 6; }
-
-.Rounded_Rectangle_1 {
-  border-style: solid;
-  border-width: 27px;
-  border-color: #61d1ed;
-  border-radius: 60px;
-  background-color: #20549a;
-  box-shadow: 0px 14px 52.38px 1.62px rgba(0, 0, 0, 0.55);
-  position: absolute;
-  left: 2225px;
-  top: 577px;
-  width: 963px;
-  height: 901px;
-  z-index: 5; }
-
-.Rounded_Rectangle_5_copy_5 {
-  border-radius: 50px;
-  position: absolute;
-  left: 2452px;
-  top: 417px;
-  width: 588px;
-  height: 339px;
-  z-index: 4; }
