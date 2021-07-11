@@ -1,12 +1,11 @@
-let tileMatrix = [];
-let score = 0;
+import {gameSettings} from './gameSettings.js'
 let $ = (id) => {return document.getElementById(id)};
 let cnv = $('cnv');
 let ctx = cnv.getContext('2d');
-
+let tileMatrix = [];
+let color;
 class Blast {
     constructor( width, height, timer) {
-
         this.width = width;
         this.height = height; 
         this.timer = timer
@@ -73,26 +72,25 @@ class Blast {
         let progressBar = document.getElementById("progressBar");
         let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 40;
-        let countClicksToLose = 15;
-        movesLeft.textContent = countClicksToLose;
+        gameSettings.countClicksToLose = 15;
+        movesLeft.textContent = gameSettings.countClicksToLose;
         cnv.addEventListener('click', function(event) {
             
-            var x1 = event.pageX - cnv.offsetLeft + cnv.clientLeft,
+            let x1 = event.pageX - cnv.offsetLeft + cnv.clientLeft,
             y1 = event.pageY - cnv.offsetTop + cnv.clientTop;
             
-            tileMatrix.forEach(function(elem, index) {
+            tileMatrix.forEach(function(elem) {
                 elem.forEach(function(element) {
 
                     if (y1 > element.y && y1 < element.y + element.h 
                         && x1 > element.x && x1 < element.x + element.w) {
                             
-                            countClicksToLose--;
-                            
-                            movesLeft.textContent = countClicksToLose;
-                            if (countClicksToLose === 0) {
+                           
+        
+                            if (gameSettings.countClicksToLose === 0) {
                                 alert('Game is over');
                             }
-                           let res = [];
+                            let res = [];
                             function adjacentTiles(array, item, row, col) {
                         
                                 if (array[row][col].visited === true) return;
@@ -125,22 +123,23 @@ class Blast {
                             
                             let adjArray = adjacentTiles(tileMatrix, element, element.row, element.col);
                             if (adjArray.length>1) {
-                            
-                            let tt = res.length;
-                            score+=adjArray.length;
+                            gameSettings.countClicksToLose--;
+                            movesLeft.textContent = gameSettings.countClicksToLose;
+                            gameSettings.score+=adjArray.length;
                             progressBar.value += adjArray.length;
-                            for(let k =0; k<tt; k++) {
+
+                            for(let k =0; k<adjArray.length; k++) {
                                 for (let i = 0; i<tileMatrix.length; i++) {
                                     const colors = ["red", "green", "blue", "yellow", "purple"];
                                     color = colors[Math.floor(Math.random() * colors.length)];
                                     let tmpImg = new Image();
-                                    tmpImg.src = `../img/${color}.png`;
+                                    tmpImg.src = `../img/tiles/${color}.png`;
                                     let p = new Blast();
                                     for (let j = 0; j<tileMatrix[i].length; j++) {
                                         if(adjArray[k].row==tileMatrix[i][j].row && adjArray[k].col == tileMatrix[i][j].col){
                                             p.deleteAnimation(tileMatrix[i][j]);
 
-                                            tileMatrix[i][j] = (p   .create_node(tileMatrix[i][j].id, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40, color, tileMatrix[i][j].row, tileMatrix[i][j].col, false));
+                                            tileMatrix[i][j] = (p.create_node(tileMatrix[i][j].id, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40, color, tileMatrix[i][j].row, tileMatrix[i][j].col, false));
 
                                             ctx.drawImage(tmpImg, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40);
                                         }
@@ -151,7 +150,7 @@ class Blast {
                     }
                 })
             });
-            if (score >= 40) {
+            if (gameSettings.score >= 40) {
                 alert("Вы победили!");
             }
         }, false)
@@ -193,17 +192,14 @@ window.addEventListener('load', function () {
     let BLAST = new Blast(460, 450, 0, 0);
     BLAST.start(460, 450);
     
-    const ww = 10;
-    const hh = 10;
-    let amountResetBooster = 3;
     let swapCount = document.getElementById('swapCount');
-    swapCount.textContent = amountResetBooster;
+    swapCount.textContent = gameSettings.amountResetBooster;
     let swapField = document.getElementById('swapField');
     swapField.addEventListener('click', function () {
-        amountResetBooster--;
-        swapCount.textContent = amountResetBooster;
+        gameSettings.amountResetBooster--;
+        swapCount.textContent = gameSettings.amountResetBooster;
         let id = 0;
-        for (let j = 0; j < ww; j++) {
+        for (let j = 0; j < gameSettings.fieldHeight; j++) {
             tileMatrix[j] = [];
             for (let i = 0; i < hh ; i++) {
                 const colors = ["red", "green", "blue", "yellow", "purple"];
@@ -222,9 +218,9 @@ window.addEventListener('load', function () {
     BLAST.next();
     
     let id = 0;
-    for (let j = 0; j < ww; j++) {
+    for (let j = 0; j < gameSettings.fieldWidth; j++) {
         tileMatrix[j] = [];
-        for (let i = 0; i < hh ; i++) {
+        for (let i = 0; i < gameSettings.fieldHeight; i++) {
             const colors = ["red", "green", "blue", "yellow", "purple"];
             color = colors[Math.floor(Math.random() * colors.length)];
             tileMatrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));   

@@ -417,3 +417,9 @@ body {
   border-color: #61d1ed;
   border-radius: 15px;
   background-color: #20549a; }
+
+@media screen and (max-width: 768px) {
+  #game {
+    flex-direction: column;
+    height: 100%;
+    width: 100%; } }

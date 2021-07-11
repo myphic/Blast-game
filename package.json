@@ -8,6 +8,7 @@
   },
   "author": "",
   "license": "ISC",
+  "type":"module",
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
@@ -17,4 +18,5 @@
     "gulp-rigger": "^0.5.8",
     "gulp-sass": "^4.1.0"
   }
+  
 }

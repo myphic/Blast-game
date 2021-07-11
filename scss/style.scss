@@ -142,3 +142,10 @@ body {
     background-color: rgb(32, 84, 154);
 }
 
+@media screen and (max-width: 768px) {
+    #game {
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+    }
+}
