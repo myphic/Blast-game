@@ -8,19 +8,13 @@ function style() {
     .pipe(gulp.dest('./css'))
     .pipe(browserSync.stream())
 }
-function minify() {
-    return gulp.src('js/index.js')
-        .pipe(babel({
-            presets: ['@babel/preset-env']
-        }))     
-        .pipe(gulp.dest('./jss'))
-}
+
 gulp.task('default', () =>
     gulp.src('js/index.js')
         .pipe(babel({
             presets: ['@babel/env']
         }))
-        .pipe(gulp.dest('jss'))
+        .pipe(gulp.dest('dest'))
 );
 function watch() {
     browserSync.init({
@@ -34,5 +28,4 @@ function watch() {
     gulp.watch('./*.html').on('change', browserSync.reload);
 }
 exports.style = style;
-exports.minify = minify
 exports.watch = watch;

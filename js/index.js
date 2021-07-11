@@ -1,7 +1,8 @@
 let matrix = [];
 let score = 0;
-const SPIN = new function () {
-    let SPIN = this,
+
+const BLAST = new function () {
+    let BLAST = this,
         cnv, ctx, width, height, nodes = [], 
        timer = 0;
         
@@ -44,11 +45,11 @@ const SPIN = new function () {
         }
     }
 
-    SPIN.create_node = (id, x, y, w, h, color, row, col, visited) => {
+    BLAST.create_node = (id, x, y, w, h, color, row, col, visited) => {
         return new Node(id, x, y, w, h, color, row, col, visited);
     };
 
-    SPIN.delete = (tile, coords, callback) =>{
+    BLAST.deleteAnimation = (coords) =>{
         let start = performance.now();
         let stop = 1000;
 
@@ -62,20 +63,15 @@ const SPIN = new function () {
             }
             coords.h-=1;
             coords.w-=1;
-            
-            let time = new Date();
-            
+   
             if (progress < stop) {
                 requestAnimationFrame(step);
-            } else {
-                //callback();
             }
         }
-
         requestAnimationFrame(step); 
     }
 
-    SPIN.update = () => {
+    BLAST.update = () => {
         ctx.clearRect(0, 0, width, height);
         for(let i = 0; i<matrix.length; i++) {
             for(let j = 0;j<matrix[i].length; j++ ){
@@ -85,21 +81,22 @@ const SPIN = new function () {
         }   
 
         if(timer < 1000) {
-            requestAnimationFrame(SPIN.update);
+            requestAnimationFrame(BLAST.update);
         }
         timer++;
     };
   
-    SPIN.start = (W, H) => {
+    BLAST.start = (W, H) => {
         cnv = $('cnv');
         ctx = cnv.getContext('2d');
         width = W;
         height = H;
         cnv.width = width;
         cnv.height = height;
-        SPIN.update();
+        BLAST.update();
     };
-    SPIN.next = () =>{
+   
+    BLAST.next = () =>{
         let progressBar = document.getElementById("progressBar");
         let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 40;
@@ -122,9 +119,9 @@ const SPIN = new function () {
                             if (countClicksToLose === 0) {
                                 alert('Game is over');
                             }
-                            let res = [];
-                            function removeItem(array, item, row, col) {
-                                
+                           let res = [];
+                            function adjacentTiles(array, item, row, col) {
+                        
                                 if (array[row][col].visited === true) return;
                                 array[row][col].visited = true;
                                 console.log(array[row][col]);
@@ -132,32 +129,30 @@ const SPIN = new function () {
                                 res.push(array[row][col]);
                                 // left
                                 if (col!=0&& array[row][col - 1].color === item.color) {
-                                  removeItem(array, item, row, col - 1);
+                                  adjacentTiles(array, item, row, col - 1);
                                 }
                                 // right
                                 if (col!=array.length-1 && array[row][col + 1].color === item.color) {
-                                  removeItem(array, item, row, col + 1);
+                                  adjacentTiles(array, item, row, col + 1);
                                 }
                                 // top
                                 if (row!=0 &&array[row - 1] && array[row - 1][col].color === item.color) {
-                                  removeItem(array, item, row - 1, col);
+                                  adjacentTiles(array, item, row - 1, col);
                                 }
                                 // bottom
                                 if (row!=array.length && array[row + 1] && array[row + 1][col].color === item.color) {
-                                  removeItem(array, item, row + 1, col);
+                                  adjacentTiles(array, item, row + 1, col);
                                 }
                                 if(res.length > 1 ) {
                                     return res;
                                 }
                             }
                               
-                            let tmp = removeItem(matrix,element,element.row, element.col);
+                            let tmp = adjacentTiles(matrix,element,element.row, element.col);
                             let tt = res.length;
                             score+=tmp.length;
                             progressBar.value += tmp.length;
                             for(let k =0; k<tt; k++) {
-                                
-                                
                                 for (let i = 0; i<matrix.length; i++) {
                                     const colors = ["red", "green", "blue", "yellow", "purple"];
                                     color = colors[Math.floor(Math.random() * colors.length)];
@@ -167,13 +162,11 @@ const SPIN = new function () {
                                 
                                     for (let j = 0; j<matrix[i].length; j++) {
                                         if(tmp[k].row==matrix[i][j].row && tmp[k].col == matrix[i][j].col){
+                                            BLAST.deleteAnimation(matrix[i][j]);
 
-                                            SPIN.delete(matrix[i][j],matrix[i][j],console.log("1111"));
-
-                                            matrix[i][j] = (SPIN.create_node(matrix[i][j].id, matrix[i][j].x, matrix[i][j].y, 40, 40, color, matrix[i][j].row, matrix[i][j].col, false));
+                                            matrix[i][j] = (BLAST.create_node(matrix[i][j].id, matrix[i][j].x, matrix[i][j].y, 40, 40, color, matrix[i][j].row, matrix[i][j].col, false));
 
                                             ctx.drawImage(tmpImg, matrix[i][j].x, matrix[i][j].y, 40, 40);
-
                                         }
                                     }
                                 } 
@@ -190,7 +183,7 @@ const SPIN = new function () {
 };
 
 window.addEventListener('load', function () {
-    SPIN.start(460, 450);
+    BLAST.start(460, 450);
     
     const ww = 10;
     const hh = 10;
@@ -198,20 +191,17 @@ window.addEventListener('load', function () {
     let swapCount = document.getElementById('swapCount');
     swapCount.textContent = countClicks;
     let swapField = document.getElementById('swapField');
-    swapField.addEventListener('click', function (event) {
-        
-        
+    swapField.addEventListener('click', function () {
         countClicks--;
-        
         swapCount.textContent = countClicks;
-        
+        let id = 0;
         for (let j = 0; j < ww; j++) {
             matrix[j] = [];
             for (let i = 0; i < hh ; i++) {
                 const colors = ["red", "green", "blue", "yellow", "purple"];
                 color = colors[Math.floor(Math.random() * colors.length)];
-                matrix[j][i] = (SPIN.create_node(ttt,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
-                ttt++;
+                matrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
+                id++;
             }
         }
         if(countClicks==0) {
@@ -223,23 +213,16 @@ window.addEventListener('load', function () {
 
 
   
-    SPIN.next();
+    BLAST.next();
     
-    let ttt = 0;
+    let id = 0;
     for (let j = 0; j < ww; j++) {
         matrix[j] = [];
         for (let i = 0; i < hh ; i++) {
             const colors = ["red", "green", "blue", "yellow", "purple"];
             color = colors[Math.floor(Math.random() * colors.length)];
-            
-            matrix[j][i] = (SPIN.create_node(ttt,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
-            
-            ttt++;
-            
+            matrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));   
+            id++;
         }
     }
-    
-    //SPIN.update();
-   
-    
 });
