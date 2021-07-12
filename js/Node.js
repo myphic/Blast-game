@@ -20,11 +20,6 @@ class Node {
         
     }
 
-    _delete() {
-        if(this.delete)
-            this.delete(this)
-    }
-
     draw () {
         let b = new Blast();
         b.rect(this.x, this.y, this.w, this.h, this.color, this.row, this.col, this.visited);

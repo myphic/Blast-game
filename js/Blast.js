@@ -75,7 +75,6 @@ class Blast {
         let progressBar = document.getElementById("progressBar");
         let movesLeft = document.getElementById('movesLeft');
         progressBar.max = 40;
-        gameSettings.countClicksToLose = 15;
         movesLeft.textContent = gameSettings.countClicksToLose;
         cnv.addEventListener('click', function(event) {
             
@@ -124,30 +123,30 @@ class Blast {
                             
                             let adjArray = adjacentTiles(tileMatrix, element, element.row, element.col);
                             if (adjArray.length>1) {
-                            gameSettings.countClicksToLose--;
-                            movesLeft.textContent = gameSettings.countClicksToLose;
-                            gameSettings.score+=adjArray.length;
-                            progressBar.value += adjArray.length;
+                                gameSettings.countClicksToLose--;
+                                movesLeft.textContent = gameSettings.countClicksToLose;
+                                gameSettings.score+=adjArray.length;
+                                progressBar.value += adjArray.length;
 
-                            for(let k =0; k<adjArray.length; k++) {
-                                for (let i = 0; i<tileMatrix.length; i++) {
-                                    const colors = ["red", "green", "blue", "yellow", "purple"];
-                                    let color = colors[Math.floor(Math.random() * colors.length)];
-                                    let tmpImg = new Image();
-                                    tmpImg.src = `../img/tiles/${color}.png`;
-                                    let p = new Blast();
-                                    for (let j = 0; j<tileMatrix[i].length; j++) {
-                                        if(adjArray[k].row==tileMatrix[i][j].row && adjArray[k].col == tileMatrix[i][j].col){
-                                            p.deleteAnimation(tileMatrix[i][j]);
+                                for(let k =0; k<adjArray.length; k++) {
+                                    for (let i = 0; i<tileMatrix.length; i++) {
+                                        
+                                        let color = gameSettings.colors[Math.floor(Math.random() * gameSettings.colors.length)];
+                                        let tmpImg = new Image();
+                                        tmpImg.src = `../img/tiles/${color}.png`;
+                                        let p = new Blast();
+                                        for (let j = 0; j<tileMatrix[i].length; j++) {
+                                            if(adjArray[k].row==tileMatrix[i][j].row && adjArray[k].col == tileMatrix[i][j].col){
+                                                p.deleteAnimation(tileMatrix[i][j]);
 
-                                            tileMatrix[i][j] = (p.create_node(tileMatrix[i][j].id, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40, color, tileMatrix[i][j].row, tileMatrix[i][j].col, false));
+                                                tileMatrix[i][j] = (p.create_node(tileMatrix[i][j].id, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40, color, tileMatrix[i][j].row, tileMatrix[i][j].col, false));
 
-                                            ctx.drawImage(tmpImg, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40);
+                                                ctx.drawImage(tmpImg, tileMatrix[i][j].x, tileMatrix[i][j].y, 40, 40);
+                                            }
                                         }
-                                    }
+                                    } 
                                 } 
-                            } 
-                        }
+                            }
                     }
                 })
             });
@@ -155,7 +154,6 @@ class Blast {
                 alert("Вы победили!");
             }
         }, false)
-
     };
 };
 export {Blast}

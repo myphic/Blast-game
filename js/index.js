@@ -16,9 +16,8 @@ window.addEventListener('load', function () {
 
         for (let j = 0; j < gameSettings.fieldHeight; j++) {
             tileMatrix[j] = [];
-            for (let i = 0; i < gameSettings.fieldWidth ; i++) {
-                const colors = ["red", "green", "blue", "yellow", "purple"];
-                let color = colors[Math.floor(Math.random() * colors.length)];
+            for (let i = 0; i < gameSettings.fieldWidth; i++) {
+                let color = gameSettings.colors[Math.floor(Math.random() * gameSettings.colors.length)];
                 tileMatrix[j][i] = (BLAST.create_node(id,30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));
                 id++;
             }
@@ -37,8 +36,7 @@ window.addEventListener('load', function () {
     for (let j = 0; j < gameSettings.fieldWidth; j++) {
         tileMatrix[j] = [];
         for (let i = 0; i < gameSettings.fieldHeight; i++) {
-            let colors = ["red", "green", "blue", "yellow", "purple"];
-            let color = colors[Math.floor(Math.random() * colors.length)];
+            let color = gameSettings.colors[Math.floor(Math.random() * gameSettings.colors.length)];
             tileMatrix[j][i] = (BLAST.create_node(id, 30 + (20 + 20) * i, 20 + (20 + 20) * j, 40, 40, color, j, i, false));   
             id++;
         }

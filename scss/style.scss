@@ -58,9 +58,8 @@ body {
 }
 
 ::-webkit-progress-value {
-    
     background-image: -moz-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
-        background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
+    background-image: -webkit-linear-gradient( 90deg, rgb(96,255,0) 1%, rgb(29,155,0) 32%, rgb(162,255,0) 77%, rgb(199,255,102) 93%, rgb(236,255,204) 100%);
 }
 
 .progress {

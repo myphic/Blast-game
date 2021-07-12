@@ -3,5 +3,6 @@ export const gameSettings = {
     fieldWidth: 10,
     fieldHeight: 10,
     amountResetBooster: 3,
-    countClicksToLose: 15
+    countClicksToLose: 15,
+    colors: ["red", "green", "blue", "yellow", "purple"]
 }
